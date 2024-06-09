@@ -1,0 +1,77 @@
+/bin/bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by bash)
+rm: cannot remove '*.csv': No such file or directory
+rm: cannot remove '*.pdf': No such file or directory
+6, 583.9627524481152, 242.80080253195476, 826.76355498007
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+6, 0.06432010712340426, 0.0008711269224290781
+7, 583.9627524481152, 258.9906052318509, 842.9533576799661
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+7, 0.06362964587720366, 0.0008006940510385005
+5, 583.9627524481152, 226.6109998320586, 810.5737522801738
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+5, 0.06530222918014184, 0.0009696661338652482
+4, 583.9627524481152, 210.42119713216243, 794.3839495802777
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+4, 0.06692571368368795, 0.001118450128324468
+3, 583.9627524481152, 194.23139443226628, 778.1941468803815
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+3, 0.06941972520851064, 0.001366477589539007
+1, 583.9627524481152, 161.85178903247396, 745.8145414805892
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+1, 0.09287157556312056, 0.003347763945921986
+8, 583.9627524481152, 275.1804079317471, 859.1431603798624
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+8, 0.06312216377234044, 0.0007475330499778369
+2, 583.9627524481152, 178.04159173237014, 762.0043441804853
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+2, 0.07497739719432624, 0.0018615679729609928
+All processes have finished.

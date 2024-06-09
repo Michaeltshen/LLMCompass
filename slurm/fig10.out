@@ -1,0 +1,70 @@
+/bin/bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by bash)
+rm: cannot remove '*.csv': No such file or directory
+rm: cannot remove '*.pdf': No such file or directory
+A100 compute area: 583.9627524481152 mm2
+A100 IO area: 242.80080253195476 mm2
+A100 total area: 826.76355498007 mm2
+Our compute area: 291.9813762240576 mm2
+Our IO area: 185.9477782130179 mm2
+Our total area: 477.9291544370755 mm2
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+Processes started.
+number of process: 130
+All processes have finished.
+0.9524180553537648

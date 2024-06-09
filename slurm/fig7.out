@@ -1,0 +1,50 @@
+/bin/bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by bash)
+rm: cannot remove '*.csv': No such file or directory
+rm: cannot remove '*.pdf': No such file or directory
+C, 583.9627524481152, 242.80080253195476, 826.76355498007
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+C, 0.05761315561985815, 0.0009703062473404255
+D, 550.5372613700538, 242.80080253195476, 793.3380639020086
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+D, 0.057560164839716314, 0.0009706807154255318
+E, 520.5457548213739, 242.80080253195476, 763.3465573533286
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+E, 0.06224286200283688, 0.0009877601480496453
+B, 583.9627524481152, 242.80080253195476, 826.76355498007
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+B, 0.05648699320851064, 0.000969613339539007
+A, 232.71959663736106, 242.80080253195476, 475.52039916931585
+simulating qkv
+simulating q_mul_k
+simulating a_mul_v
+simulating h_matmul0
+simulating h1_matmul1
+simulating h2_matmul2
+finish matmul simulation
+A, 0.1844008882439716, 0.0009770317482269504
+All processes have finished.
