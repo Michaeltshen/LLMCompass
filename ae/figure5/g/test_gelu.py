@@ -45,6 +45,7 @@ if __name__ == "__main__":
             )
             if args.gpu:
                 latency = model.run_on_gpu()
+                file_name = "g_gpu_results.csv"
             if args.amd:
                 model.amd_kernel_launch_overhead()
                 latency = model.run_on_amd()

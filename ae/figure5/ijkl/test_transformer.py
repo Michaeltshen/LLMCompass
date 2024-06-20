@@ -53,6 +53,7 @@ if __name__ == "__main__":
                 model.compile_and_simulate(TPU_system, compile_mode="heuristic-TPU")
                 file_name = "transformer_TPUv3_sim.csv"
         if args.gpu:
+            file_name = "ijkl_gpu_results.csv"
             model = TransformerBlockInitComputationTP(
                 d_model=12288,
                 n_heads=96,
@@ -99,6 +100,7 @@ if __name__ == "__main__":
                 model.compile_and_simulate(TPU_system, compile_mode="heuristic-TPU")
                 file_name = "transformerAR_TPUv3_sim.csv"
         if args.gpu:
+            file_name = "ijkl_gpu_results.csv"
             model = TransformerBlockAutoRegressionTP(
                 d_model=12288,
                 n_heads=96,
