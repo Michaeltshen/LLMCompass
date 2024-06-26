@@ -15,8 +15,11 @@ cd ab
 rm *.csv
 rm *.pdf
 cd ../../..
-python -m ae.figure5.ab.test_matmul --gpu --roofline
-python -m ae.figure5.ab.test_matmul --gpu
+for i in {1..2500}
+    python -m ae.figure5.ab.test_matmul --gpu --roofline
+    python -m ae.figure5.ab.test_matmul --gpu
+done
+
 cd ae/figure5/ab
 
 cd ../cf
@@ -24,8 +27,10 @@ cd ../cf
 rm *.csv
 rm *.pdf
 cd ../../..
-python -m ae.figure5.cf.test_softmax --gpu --roofline
-python -m ae.figure5.cf.test_softmax --gpu
+for i in {1..2500}
+    python -m ae.figure5.cf.test_softmax --gpu --roofline
+    python -m ae.figure5.cf.test_softmax --gpu
+done
 cd ae/figure5/cf
 
 cd ../de
@@ -33,8 +38,10 @@ cd ../de
 rm *.csv
 rm *.pdf
 cd ../../..
-python -m ae.figure5.de.test_layernorm --gpu --roofline
-python -m ae.figure5.de.test_layernorm --gpu
+for i in {1..2500}
+    python -m ae.figure5.de.test_layernorm --gpu --roofline
+    python -m ae.figure5.de.test_layernorm --gpu
+done
 cd ae/figure5/de
 
 cd ../g
@@ -42,25 +49,28 @@ cd ../g
 rm *.csv
 rm *.pdf
 cd ../../..
-python -m ae.figure5.g.test_gelu --gpu --roofline
-python -m ae.figure5.g.test_gelu --gpu
+for i in {1..2500}
+    python -m ae.figure5.g.test_gelu --gpu --roofline
+    python -m ae.figure5.g.test_gelu --gpu
+done
 cd ae/figure5/g
 
-cd ../h
+# cd ../h
 
-rm *.csv
-rm *.pdf
-cd ../../..
-python -m ae.figure5.h.test_allreduce
-cd ae/figure5/h
+# rm *.csv
+# rm *.pdf
+# cd ../../..
+# python -m ae.figure5.h.test_allreduce
+# cd ae/figure5/h
 
-cd ../ijkl
+# cd ../ijkl
 
-rm *.csv
-rm *.pdf
-cd ../../..
-python -m ae.figure5.ijkl.test_transformer --gpu --roofline
-python -m ae.figure5.ijkl.test_transformer --gpu
-cd ae/figure5/ijkl
-
-cd ../
+# rm *.csv
+# rm *.pdf
+# cd ../../..
+# python -m ae.figure5.ijkl.test_transformer --gpu --roofline
+# python -m ae.figure5.ijkl.test_transformer --gpu --init --roofline
+# python -m ae.figure5.ijkl.test_transformer --gpu
+# python -m ae.figure5.ijkl.test_transformer --gpu --init
+# cd ae/figure5/ijkl
+# cd ../
