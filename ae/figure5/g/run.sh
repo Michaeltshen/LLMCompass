@@ -1,6 +1,3 @@
-rm *.csv
-rm *.pdf
-
 cd ../../..
 
 python -m ae.figure5.g.test_gelu --simgpu --roofline

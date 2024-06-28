@@ -1,5 +1,3 @@
-rm *.csv
-rm *.pdf
 
 cd ../../..
 
