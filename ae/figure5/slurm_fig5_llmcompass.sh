@@ -8,6 +8,7 @@
 #SBATCH -t 99:00:00
 #SBATCH --gres=gpu:a100:1
 #SBATCH --partition=default_partition
+#SBATCH --nodelist=kim-compute-03
 #SBATCH --requeue
 
 source run_hardware.sh
