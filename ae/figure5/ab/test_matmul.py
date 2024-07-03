@@ -23,14 +23,14 @@ if __name__ == "__main__":
     MI210 = device_dict["MI210"]
     amd_overhead = MI210.compute_module.overhead.softmax
 
-    K = 12288
+    K = 512
     N = K
     titile = f"Performance of Matmul with K={K}, N={N}"
     print(f"{titile}")
 
     test_overhead = True
 
-    for M in range(5, 16):
+    for M in range(9, 10):
         M = 2**M
         model = Matmul(data_type=data_type_dict["fp16"])
         _ = model(
@@ -42,7 +42,7 @@ if __name__ == "__main__":
                 model.gpu_kernel_launch_overhead()
                 test_overhead = False
             latency = model.run_on_gpu()
-            file_name='ab_gpu_results.csv'
+            file_name='ab_gpu_results_512.csv'
         if args.simtpu:
             if args.roofline:
                 latency = model.roofline_model(pcb) + 110e-6
@@ -65,13 +65,13 @@ if __name__ == "__main__":
         if args.simgpu:
             if args.roofline:
                 latency = model.roofline_model(pcb) + 2.1e-5
-                file_name='matmul_A100_roofline.csv'
+                file_name='matmul_A100_roofline_512.csv'
             else:
                 latency = (
                     model.compile_and_simulate(pcb, compile_mode="heuristic-GPU")
                     + 2.1e-5
                 )
-                file_name='matmul_A100_sim.csv'
+                file_name='matmul_A100_sim_512.csv'
         if args.simamd:
             if args.roofline:
                 latency = model.roofline_model(pcb_module=MI210) + amd_overhead
@@ -89,9 +89,9 @@ if __name__ == "__main__":
         with open(f'ae/figure5/ab/{file_name}', 'a') as f:
             f.write(f"{M}, {N}, {K}, {latency*1e3:.4f}ms, {tflops:.4f}Tflops\n")
 
-    M = 8192
+    M = 512
     print(f"Performance of Matmul with M={M}, N=K")
-    for K in range(5, 16):
+    for K in range(9, 10):
         K = 2**K
         N = K
         model = Matmul(data_type=data_type_dict["fp16"])
