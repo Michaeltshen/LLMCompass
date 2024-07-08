@@ -12,7 +12,7 @@ import pandas as pd
 import os
 from scalesim.scale_sim import scalesim
 import copy
-
+import csv
 
 class BatchedMatmul(Operator):
     def __init__(self, data_type: DataType):
@@ -277,6 +277,24 @@ class Matmul(Operator):
         pcb_module: Device,
         compile_mode: str = "exhaustive",
     ):
+        
+        output_file = open("matmul_cycle_count_info.csv", "w", newline='')
+        writer = csv.writer(output_file)
+        
+        headers = [
+            'm', 'n', 'k', 
+            'mk_input', 'mk_input_iterations',
+            'kn_input', 'kn_input_iterations',
+            'mn_output', 'mn_output_iterations',
+            'read', 'read_iterations',
+            'compute', 'compute_iterations',
+            'pipelined_read_compute', 'pipelined_read_compute_iterations',
+            'final_compute', 'final_compute_iterations',
+            'write', 'write_iterations',
+            'reduction', 'reduction_iterations',
+            'total']
+        writer.writerow(headers)
+        
         min_cycle_count = 2**63 - 1
         best_mapping = None
         M = self.computational_graph.M
@@ -580,11 +598,25 @@ class Matmul(Operator):
                                         l0_N_tiling_factor,
                                         l0_K_tiling_factor,
                                     )
-                                    cycle_count = self.simulate(
+                                    cycle_count, mk_matrix_i, mk_matrix_i_iterations, kn_matrix_i, kn_matrix_i_iterations, mn_matrix_o, mn_matrix_o_iterations, read, read_iterations, compute, compute_iterations, read_compute_pipelined, read_compute_pipelined_iterations, final_compute, final_compute_iterations, write, write_iterations, reduction, reduction_iterations = self.simulate(
                                         self.computational_graph,
                                         mapping,
                                         pcb_module,
+                                        output_file
                                     )
+                                    writer.writerow([
+                                        l2_tile_M, l2_tile_N, l2_tile_K, 
+                                        mk_matrix_i, mk_matrix_i_iterations, 
+                                        kn_matrix_i, kn_matrix_i_iterations, 
+                                        mn_matrix_o, mn_matrix_o_iterations, 
+                                        read, read_iterations, 
+                                        compute, compute_iterations, 
+                                        read_compute_pipelined, read_compute_pipelined_iterations, 
+                                        final_compute, final_compute_iterations,
+                                        write, write_iterations,
+                                        reduction, reduction_iterations,
+                                        cycle_count
+                                    ])
                                     end = time.time()
                                     # if i % 1000 == 0:
                                     #     print(f"{i} simulation time: {end-start}")
@@ -734,7 +766,11 @@ class Matmul(Operator):
         # if self.best_mapping is not None:
         #     self.best_mapping.display()
         self.best_cycle_count = min_cycle_count
+        print(f"Best Cycle Count: {self.best_cycle_count}")
         self.best_latency = min_cycle_count / pcb_module.compute_module.clock_freq
+        print(f"Best Latency: {self.best_latency + 2.1e-5}")
+        tflops = 2 * M * N * K / (self.best_latency + + 2.1e-5) / 1e12
+        print(f"{M}, {N}, {K}, {self.best_latency*1e3 + 2.1e-5:.4f}ms, {tflops:.4f}Tflops")
         self.latency = self.best_latency
         # self.best_mapping.display()
         return self.latency
@@ -744,7 +780,16 @@ class Matmul(Operator):
         computational_graph: ComputationalGraph,
         mapping: Mapping,
         pcb_module: Device,
+        output_file
     ) -> int:
+        # IO input operations come from mk and kn and ouput operations come from mn
+        mk_matrix_i, kn_matrix_i, mn_matrix_o = 0, 0, 0
+        mk_matrix_i_iterations, kn_matrix_i_iterations, mn_matrix_o_iterations = 0, 0, 0
+        read, compute, read_compute_pipelined, write, final_compute = 0, 0, 0, 0, 0
+        read_iterations, compute_iterations, read_compute_pipelined_iterations, write_iterations, final_compute_iterations = 0, 0, 0, 0, 0
+        reduction = 0
+        reduction_iterations = 0
+        
         if self.look_up_table is None:
             self.look_up_table = pd.read_csv(
                 f"./systolic_array_model/look_up_table_{pcb_module.compute_module.core.systolic_array.array_height}_{pcb_module.compute_module.core.systolic_array.array_width}.csv",
@@ -897,7 +942,11 @@ class Matmul(Operator):
         total_cycle_count += (
             l2_tiles[0, 0, 0].M_K_io_cycle_count + l2_tiles[0, 0, 0].K_N_io_cycle_count
         )
-
+        mk_matrix_i += l2_tiles[0, 0, 0].M_K_io_cycle_count
+        kn_matrix_i += l2_tiles[0, 0, 0].K_N_io_cycle_count
+        mk_matrix_i_iterations += 1
+        kn_matrix_i_iterations += 1
+        
         previous_m = 0
         previous_n = 0
         previous_k = 0
@@ -945,6 +994,15 @@ class Matmul(Operator):
                     )
                     + previous_tile_write_cycle_count
                 )
+                read += current_tile_read_cycle_count
+                read_iterations += 1
+                compute += previous_tile_compute_cycle_count
+                compute_iterations += 1
+                read_compute_pipelined += max(current_tile_read_cycle_count, previous_tile_compute_cycle_count)
+                read_compute_pipelined_iterations += 1
+                compute_iterations += 1
+                write += previous_tile_write_cycle_count
+                write_iterations += 1
             else:  # non-pipelined
                 total_cycle_count += (
                     current_tile_read_cycle_count
@@ -956,16 +1014,26 @@ class Matmul(Operator):
             previous_n = n
             previous_k = k
 
+        # output_file.write(f"Post Tile Loop Compute Cycle Count: {total_cycle_count}\n")
+
         # compute and write last tile
         total_cycle_count += (
             l2_tiles[-1, -1, -1].M_N_io_cycle_count
             + l2_tiles[-1, -1, -1].compute_cycle_count
         )
-
+        mn_matrix_o += l2_tiles[-1, -1, -1].M_N_io_cycle_count
+        mn_matrix_o_iterations += 1
+        final_compute += l2_tiles[-1, -1, -1].compute_cycle_count
+        final_compute_iterations += 1
+        
         if previous_k > 0:
             total_cycle_count += ceil(l2_tiles[-1, -1, -1].K_reduction_cycle_count)
+            reduction += ceil(l2_tiles[-1, -1, -1].K_reduction_cycle_count)
+            reduction_iterations += 1
 
-        return total_cycle_count #+ ceil(
+        return total_cycle_count, mk_matrix_i, mk_matrix_i_iterations, kn_matrix_i, kn_matrix_i_iterations, mn_matrix_o, mn_matrix_o_iterations, read, read_iterations, compute, compute_iterations, read_compute_pipelined, read_compute_pipelined_iterations, final_compute, final_compute_iterations, write, write_iterations, reduction, reduction_iterations
+
+        # return total_cycle_count #+ ceil(
         # pcb_module.io_module.latency * 2 * pcb_module.compute_module.clock_freq
         # )
 
