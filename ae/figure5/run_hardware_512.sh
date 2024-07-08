@@ -2,7 +2,6 @@
 
 # Navigate to the first directory and clean up
 cd ab
-rm *.csv *.pdf
 cd ../../..
 
 # Run tests for the first case
