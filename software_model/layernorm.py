@@ -196,9 +196,9 @@ class LayerNorm(Operator):
             total_cycle_count += l2_tiles[m].compute_cycle_count
             total_cycle_count += l2_tiles[m].write_cycle_count
             
-            read += l2_tiles[m].read_cycle_count
-            compute += l2_tiles[m].compute_cycle_count
-            write += l2_tiles[m].write_cycle_count
+            read += int(l2_tiles[m].read_cycle_count)
+            compute += int(l2_tiles[m].compute_cycle_count)
+            write += int(l2_tiles[m].write_cycle_count)
             
             read_iterations += 1
             compute_iterations += 1
