@@ -62,8 +62,8 @@ fig.suptitle('Layer Norm Cycle Count Analysis', fontsize=20)
 print(xaxis_labels_n)
 
 for i in range(11):
-    plot_single_stacked_bar(axes[0, i], i, f'n=4k {xaxis_labels_m[i]}')
-    plot_single_stacked_bar(axes[1, i], i + 11, f'm=4k {xaxis_labels_n[i + 11]}')
+    plot_single_stacked_bar(axes[0, i], i, f'm=4k {xaxis_labels_n[i]}')
+    plot_single_stacked_bar(axes[1, i], i + 11, f'n=4k {xaxis_labels_m[i + 11]}')
 
 labels = ['Read CC', 'Write CC', 'Compute CC']
 colors = ['#4169E1', '#FFD700', '#4B0082']
