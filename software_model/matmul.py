@@ -277,23 +277,28 @@ class Matmul(Operator):
         pcb_module: Device,
         compile_mode: str = "exhaustive",
     ):
-        
-        output_file = open("matmul_cycle_count_info.csv", "w", newline='')
+        file_exists = os.path.isfile("matmul_cycle_count_info.csv")
+
+        if not file_exists:
+            with open("matmul_cycle_count_info.csv", "w", newline='') as output_file:
+                writer = csv.writer(output_file)
+                headers = [
+                    'm', 'n', 'k', 
+                    'l2_tile_m', 'l2_tile_n', 'l2_tile_k',
+                    'mk_input', 'mk_input_iterations',
+                    'kn_input', 'kn_input_iterations',
+                    'mn_output', 'mn_output_iterations',
+                    'read', 'read_iterations',
+                    'compute', 'compute_iterations',
+                    'pipelined_read_compute', 'pipelined_read_compute_iterations',
+                    'final_compute', 'final_compute_iterations',
+                    'write', 'write_iterations',
+                    'reduction', 'reduction_iterations',
+                    'total']
+                writer.writerow(headers)
+
+        output_file = open("matmul_cycle_count_info.csv", "a", newline='')
         writer = csv.writer(output_file)
-        
-        headers = [
-            'm', 'n', 'k', 
-            'mk_input', 'mk_input_iterations',
-            'kn_input', 'kn_input_iterations',
-            'mn_output', 'mn_output_iterations',
-            'read', 'read_iterations',
-            'compute', 'compute_iterations',
-            'pipelined_read_compute', 'pipelined_read_compute_iterations',
-            'final_compute', 'final_compute_iterations',
-            'write', 'write_iterations',
-            'reduction', 'reduction_iterations',
-            'total']
-        writer.writerow(headers)
         
         min_cycle_count = 2**63 - 1
         best_mapping = None
@@ -605,6 +610,7 @@ class Matmul(Operator):
                                         output_file
                                     )
                                     writer.writerow([
+                                        M, N, K,
                                         l2_tile_M, l2_tile_N, l2_tile_K, 
                                         mk_matrix_i, mk_matrix_i_iterations, 
                                         kn_matrix_i, kn_matrix_i_iterations, 
