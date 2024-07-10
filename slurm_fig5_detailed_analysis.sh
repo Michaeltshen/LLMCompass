@@ -9,4 +9,4 @@
 #SBATCH --partition=default_partition
 #SBATCH --requeue
 
-python -m ae.figure5.ab.test_matmul --simgpu
+python -m ae.figure5.de.test_layernorm --simgpu

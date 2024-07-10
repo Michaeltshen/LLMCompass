@@ -8,7 +8,8 @@ import time
 import statistics
 import numpy as np
 import torch
-
+import os
+import csv
 
 @torch.compile
 def layernorm_gpu(input: torch.Tensor) -> torch.Tensor:
@@ -76,6 +77,23 @@ class LayerNorm(Operator):
         self.computational_graph.data_type = (
             pcb_module.compute_module.core.vector_unit.data_type
         )
+        
+        file_exists = os.path.isfile("layernorm_cycle_count_info.csv")
+
+        if not file_exists:
+            with open("layernorm_cycle_count_info.csv", "w", newline='') as output_file:
+                writer = csv.writer(output_file)
+                headers = [
+                    'm', 'n',  
+                    'read', 'read_iterations',
+                    'compute', 'compute_iterations',
+                    'write', 'write_iterations',
+                    'total']
+                writer.writerow(headers)
+
+        output_file = open("layernorm_cycle_count_info.csv", "a", newline='')
+        writer = csv.writer(output_file)
+        
         min_cycle_count = float("inf")
         best_mapping = None
         M = self.computational_graph.M
@@ -114,13 +132,24 @@ class LayerNorm(Operator):
             l1_tile_M,
             l1_tile_N,
         )
-        cycle_count = self.simulate(self.computational_graph, mapping, pcb_module)
+        cycle_count, read, read_iterations, compute, compute_iterations, write, write_iterations = self.simulate(self.computational_graph, mapping, pcb_module)
+        writer.writerow([
+                            M, N,
+                            read, read_iterations, 
+                            compute, compute_iterations, 
+                            write, write_iterations,
+                            cycle_count
+                        ])
         if cycle_count < min_cycle_count:
             min_cycle_count = cycle_count
             best_mapping = mapping
         self.best_mapping = best_mapping
         self.best_cycle_count = min_cycle_count
+        print(f"Best Cycle Count: {self.best_cycle_count}")
         self.best_latency = min_cycle_count / pcb_module.compute_module.clock_freq
+        print(f"Best Latency: {self.best_latency + 4.5e-5}")
+        throughput = M * N / (self.best_latency + + 4.5e-5) / 1e9
+        print(f"{M}, {N}, {self.best_latency*1e3 + 4.5e-5:.4f}ms, {throughput:.4f}G Elements/s")
         self.latency = self.best_latency
         # self.best_mapping.display()
         return self.latency
@@ -131,6 +160,8 @@ class LayerNorm(Operator):
         mapping: Mapping,
         pcb_module: Device,
     ) -> int:
+        read, compute, write = 0, 0, 0
+        read_iterations, compute_iterations, write_iterations = 0, 0, 0
         M = computational_graph.M
         N = computational_graph.N
         data_type = computational_graph.data_type
@@ -164,7 +195,15 @@ class LayerNorm(Operator):
             total_cycle_count += l2_tiles[m].read_cycle_count
             total_cycle_count += l2_tiles[m].compute_cycle_count
             total_cycle_count += l2_tiles[m].write_cycle_count
-        return total_cycle_count
+            
+            read += l2_tiles[m].read_cycle_count
+            compute += l2_tiles[m].compute_cycle_count
+            write += l2_tiles[m].write_cycle_count
+            
+            read_iterations += 1
+            compute_iterations += 1
+            write_iterations += 1
+        return total_cycle_count, read, read_iterations, compute, compute_iterations, write, write_iterations
 
     class L2TileSimulator:
         def __init__(
