@@ -1,0 +1,20 @@
+/bin/bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by /bin/bash)
+bash: /home/mts247/.conda/envs/rag/lib/libtinfo.so.6: no version information available (required by bash)
+rm: cannot remove '*.csv': No such file or directory
+rm: cannot remove '*.pdf': No such file or directory
+A100 compute area: 583.9627524481152 mm2
+A100 IO area: 242.80080253195476 mm2
+A100 total area: 826.76355498007 mm2
+Our compute area: 291.9813762240576 mm2
+Our IO area: 185.9477782130179 mm2
+Our total area: 477.9291544370755 mm2
+All processes have finished.
+/home/mts247/CSL-Research/LLM-Modeling/LLMCompass/ae/figure11/plot_decoding.py:30: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  our_512 = our[our.seq_len == 512][our["bs"].isin(bs_list)]["latency"].tolist()
+/home/mts247/CSL-Research/LLM-Modeling/LLMCompass/ae/figure11/plot_decoding.py:31: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  our_2048 = our[our.seq_len == 2048][our["bs"].isin(bs_list)]["latency"].tolist()
+/home/mts247/CSL-Research/LLM-Modeling/LLMCompass/ae/figure11/plot_decoding.py:32: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  a100_512 = A100[A100.seq_len == 512][A100["bs"].isin(bs_list)]["latency"].tolist()
+/home/mts247/CSL-Research/LLM-Modeling/LLMCompass/ae/figure11/plot_decoding.py:33: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  a100_2048 = A100[A100.seq_len == 2048][A100["bs"].isin(bs_list)]["latency"].tolist()
+0.9981956554235897
