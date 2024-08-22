@@ -1,0 +1,68 @@
+{
+    "name": "NVIDIA A6000 Ada x8",
+    "device_count": 8,
+    "interconnect": {
+        "link": {
+            "name": "",
+            "bandwidth_per_direction_byte": ,
+            "bandwidth_both_directions_byte": ,
+            "latency_second": ,
+            "flit_size_byte": ,
+            "header_size_byte": ,
+            "max_payload_size_byte": 
+        },
+        "link_count_per_device": ,
+        "topology": 
+    },
+    "device": {
+        "frequency_Hz": ,
+        "compute_chiplet_count": ,
+        "compute_chiplet": {
+            "physical_core_count": ,
+            "core_count": ,
+            "process_node": ,
+            "core": {
+                "sublane_count": ,
+                "systolic_array": {
+                    "array_width": ,
+                    "array_height": ,
+                    "data_type": ,
+                    "mac_per_cycle": 
+                },
+                "vector_unit": {
+                    "vector_width": ,
+                    "flop_per_cycle": ,
+                    "data_type": ,
+                    "int32_count": ,
+                    "fp16_count": ,
+                    "fp32_count": ,
+                    "fp64_count": 
+                },
+                "register_file": {
+                    "num_reg_files": ,
+                    "num_registers": ,
+                    "register_bitwidth":,
+                    "num_rdwr_ports":
+                },
+                "SRAM_KB": 
+            }
+        },
+        "memory_protocol": ,
+        "_memory_protocol_list": [
+           
+        ],
+        "io": {
+            "process_node": ,
+            "global_buffer_MB": ,
+            "physical_global_buffer_MB": ,
+            "global_buffer_bandwidth_per_cycle_byte": ,
+            "memory_channel_physical_count": ,
+            "memory_channel_active_count": ,
+            "pin_count_per_channel": ,
+            "bandwidth_per_pin_bit": 
+        },
+        "memory": {
+            "total_capacity_GB": 
+        }
+    }
+}

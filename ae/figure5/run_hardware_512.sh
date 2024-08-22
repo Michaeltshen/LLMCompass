@@ -6,6 +6,6 @@ cd ../../..
 
 # Run tests for the first case
 for i in {1..25}; do
-    python -m ae.figure5.ab.test_matmul --gpu --roofline
-    python -m ae.figure5.ab.test_matmul --gpu
+    python -m ae.figure5.ab.test_matmul_512 --gpu --roofline
+    python -m ae.figure5.ab.test_matmul_512 --gpu
 done
